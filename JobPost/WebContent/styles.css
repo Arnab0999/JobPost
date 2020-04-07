@@ -1,0 +1,203 @@
+
+#divhead {
+	padding: 10px 300px 50px 550px;
+	width: 200px;
+	height: 30px;
+	display: flex;
+	flex-wrap: wrap;
+	color: blue;
+}
+#divname {
+	padding: 10px 30px 50px 50px;
+	width: 200px;
+	height: 30px;
+	display: flex;
+	flex-wrap: wrap;
+	color: blue;
+}
+
+#s1 {
+	padding: 10px 10px 10px 10px;
+	
+}
+p {
+  color: red;
+}
+.box {
+	width: 400px;
+	padding: 40px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+	align-content: center;
+	background: rgba(0,0, 0, 0.7)
+}
+.box h1 {
+	color: white;
+	font-weight: 500;
+	text-align: center;
+	opacity: 0.6;
+}
+.box input[type="text"] {
+	border: 0;
+	background: none;
+	display: block;
+	margin: 20px auto;
+	text-align: center;
+	border: 2px solid #3498db;
+	padding: 14px 10px;
+	width: 200px;
+	outline: none;
+	color:white;
+	border-radius: 24px;
+	transition: 0.25s;
+	opacity: 1.0;
+
+}
+.box input[type="password"] {
+	border: 0;
+	background: none;
+	display: block;
+	margin: 20px auto;
+	text-align: center;
+	border: 2px solid #3498db;
+	padding: 14px 10px;
+	width: 200px;
+	outline: none;
+	color:white;
+	border-radius: 24px;
+	transition: 0.25s;
+	opacity: 1.0;
+}
+.box input[type="text"]:focus {
+	width: 280px;
+	border-color: darkblue;
+	opacity: 1.0;
+}
+.box input[type="password"]:focus {
+	width: 280px;
+	border-color: darkblue;
+	opacity: 1.0;
+}
+.box input[type="submit"] {
+	border: 0;
+	background: none;
+	display: block;
+	margin: 20px auto;
+	text-align: center;
+	border: 2px solid #3498db;
+	padding: 14px 40px;
+	outline: none;
+	border-radius: 24px;
+	transition: 0.25s;
+	cursor: pointer;
+	align-content: center;
+	color: white;
+}
+.box input[type="submit"]:hover {
+	background: darkblue;
+	border-color: darkblue;
+	color: black;
+}
+.box1 {
+	width: 900px;
+	padding: 40px;
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+	align-content: center;
+	background: rgba(0,0, 0, 0.7)
+}
+.box1 h1 {
+	color:black;
+	font-family: sans-serif;
+	font-weight: 500;
+	text-align: center;
+	opacity: 1.0;
+}
+.box1 input[type="submit"] {
+	border: 0;
+	background: none;
+	display: block;
+	margin: 20px auto;
+	text-align: center;
+	border: 2px solid orange;
+	padding: 14px 40px;
+	outline: none;
+	border-radius: 24px;
+	transition: 0.25s;
+	cursor: pointer;
+	align-content: center;
+	opacity: 1.0;
+}
+.box1 input[type="submit"]:hover {
+	background: orange;
+}
+.card {
+	/* Add shadows to create the "card" effect */
+	width: 300px;
+	text-align: center;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	transition: 0.3s;
+	border-radius: 5px;
+	background-color: #3498db;
+  }
+  
+  /* On mouse-over, add a deeper shadow */
+  .card:hover {
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  /* Add some padding inside the card container */
+  .container {
+	padding: 2px 16px;
+  }
+  .form1 {
+	width: 400px;
+	padding: 40px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+	align-content: center;
+	background: rgba(0,0, 0, 0.7)
+  }
+  .form1 input[type="text"],input[type="password"] {
+	border: 0;
+	background: none;
+	display: block;
+	margin: 20px auto;
+	text-align: center;
+	border: 2px solid #3498db;
+	padding: 14px 10px;
+	width: 200px;
+	outline: none;
+	color:white;
+	border-radius: 24px;
+	transition: 0.25s;
+	opacity: 1.0;
+
+}
+.sox {
+	width: 600px;
+	padding: 40px;
+	position: absolute;
+	top: 30%;
+	left: 75%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+	align-content: center;
+	background: rgba(0,0, 0, 0.7)
+}
+.sox h1 {
+	color:white;
+	font-family: sans-serif;
+	font-weight: 500;
+	text-align: center;
+	opacity: 0.5;
+}
