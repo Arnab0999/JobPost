@@ -1,12 +1,14 @@
 package login.post.registartion;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import show.jobs.*;
+import home.data.NumberOfData;
 /**
  * Servlet implementation class LoginProcess
  */
@@ -27,7 +29,19 @@ public class LoginProcess extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		CustomerDAO cd = new CustomerDAO();
+		String userid = request.getParameter("userid");
+		String passwd = request.getParameter("passwd");
+		String type = request.getParameter("type");
+		String submitType = request.getParameter("submit");
+		Customer c = cd.getCustomer(userid, passwd, type);
+		System.out.println(submitType);
+		if(c!=null  && submitType.equals("Log In")) {
+			request.setAttribute("UserID", c.getUserid());
+			request.getRequestDispatcher("StudentHome.jsp").forward(request, response);
+		}
+		
 	}
 
 	/**
@@ -39,41 +53,51 @@ public class LoginProcess extends HttpServlet {
 		CustomerDAO cd = new CustomerDAO();
 		String userid = request.getParameter("userid");
 		String passwd = request.getParameter("passwd");
-		String FirstName = request.getParameter("firstname");
-		String LastName = request.getParameter("lastname");
-		String College = request.getParameter("college");
-		String age = request.getParameter("age");
-		String interest1 = request.getParameter("interest1");
-		String interest2 = request.getParameter("interest2");
-		String interest3 = request.getParameter("interest3");
+		String type = request.getParameter("type");
 		String submitType = request.getParameter("submit");
-		Customer c = cd.getCustomer(userid, passwd);
-		if(c!=null  && submitType.equals("Login")) {
-			request.setAttribute("name", c.getFirstname());
-			request.setAttribute("interest1", c.getInterest1());
-			request.getRequestDispatcher("StudentHome.jsp").forward(request, response);
+		System.out.println(type);
+		Customer c = cd.getCustomer(userid, passwd, type);
+		if(c!=null  && submitType.equals("Log In")) {
+			request.setAttribute("UserID", c.getUserid());
+			if(type.charAt(0) == 'S') {
+				JobsForStudent jfs = new JobsForStudent();
+				ArrayList<JobData> arr = jfs.getData(c.getUserid());
+				ArrayList<JobData> all = jfs.getAllData();
+				if(arr.size()!=0)
+					request.setAttribute("CompanyData", arr);
+				else
+					request.setAttribute("CompanyData", all);
+				cd.getStudentDetails(userid);
+				StudentDetails sd = new StudentDetails();
+				request.setAttribute("StudentData", sd);
+				NumberOfData nd = new NumberOfData();
+				request.setAttribute("StudentNumber", nd.getStudentNumber());
+				request.getRequestDispatcher("StudentHome.jsp").forward(request, response);
+			}
+			else {
+				StudentsForCompany sfj = new StudentsForCompany();
+				ArrayList<StudentData> arr = sfj.getData(c.getUserid());
+				request.setAttribute("StudentData", arr);
+				CompanyDetails cdd = new CompanyDetails();
+				request.setAttribute("CompanyData",cdd);
+				request.getRequestDispatcher("CompanyHome.jsp").forward(request, response);
+			}
 		}
-		else if(submitType.equals("Register")) {
-			c.setFirstname(FirstName);
+		else if(submitType.equals("Sign Up")) {
 			c.setPassword(passwd);
 			c.setUserid(userid);
-			c.setLastname(LastName);
-			c.setAge(age);
-			c.setCollege(College);
-			c.setInterest1(interest1);
-			c.setInterest2(interest2);
-			c.setInterest3(interest3);
+			c.setType(type);
 			int status = cd.setCustomer(c);
 			if(status!=0)
 				request.setAttribute("message", "Registration Complete!! Login to continue.");
 			else
 				request.setAttribute("message", "Some problem occured please register again.");
-			request.getRequestDispatcher("home.jsp").forward(request, response);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
 		else {
 			
 			request.setAttribute("message", "Invalid username or password!");
-			request.getRequestDispatcher("home.jsp").forward(request, response);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
 	}
 
