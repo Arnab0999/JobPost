@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import show.jobs.*;
 import home.data.NumberOfData;
+import Session.*;
 /**
  * Servlet implementation class LoginProcess
  */
@@ -55,7 +56,7 @@ public class LoginProcess extends HttpServlet {
 		String passwd = request.getParameter("passwd");
 		String type = request.getParameter("type");
 		String submitType = request.getParameter("submit");
-		System.out.println(type);
+		System.out.println(submitType);
 		Customer c = cd.getCustomer(userid, passwd, type);
 		if(c!=null  && submitType.equals("Log In")) {
 			request.setAttribute("UserID", c.getUserid());
@@ -63,6 +64,14 @@ public class LoginProcess extends HttpServlet {
 				JobsForStudent jfs = new JobsForStudent();
 				ArrayList<JobData> arr = jfs.getData(c.getUserid());
 				ArrayList<JobData> all = jfs.getAllData();
+				StudentSession.setCus(c);
+				ArrayList<Application> apps = jfs.getMyApps(c.getUserid());
+				StudentSession.setApps(apps);
+				if(arr.size()!=0)
+					StudentSession.setJobs(arr);
+				else
+					StudentSession.setJobs(all);
+				request.setAttribute("Apps", apps);
 				if(arr.size()!=0)
 					request.setAttribute("CompanyData", arr);
 				else
@@ -77,13 +86,20 @@ public class LoginProcess extends HttpServlet {
 			else {
 				StudentsForCompany sfj = new StudentsForCompany();
 				ArrayList<StudentData> arr = sfj.getData(c.getUserid());
+				ArrayList<StudentData> apps = sfj.getApps(c.getUserid());
+				CompanySession.setJobs(sfj.getMyJobs(c.getUserid()));
+				CompanySession.setCus(c);
+				CompanySession.setStuds(arr);
+				CompanySession.setApps(apps);
 				request.setAttribute("StudentData", arr);
+				request.setAttribute("Apps", apps);
 				CompanyDetails cdd = new CompanyDetails();
 				request.setAttribute("CompanyData",cdd);
 				request.getRequestDispatcher("CompanyHome.jsp").forward(request, response);
 			}
 		}
 		else if(submitType.equals("Sign Up")) {
+			c = new Customer();
 			c.setPassword(passwd);
 			c.setUserid(userid);
 			c.setType(type);

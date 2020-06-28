@@ -74,4 +74,21 @@ public class NumberOfData {
 		}
 		return data;
 	}
+	public String getAppsFilled() {
+		try {
+			int count = 0;
+			con = ConnectionProvider.getConnection();
+			mystate = con.prepareStatement("select * from JobPost.Applications WHERE Status=?");
+			mystate.setString(1, "Accept");
+			ResultSet rs = mystate.executeQuery();
+			while(rs.next()) {
+				count++;
+			}
+			data = Integer.toString(count);
+		}
+		catch(Exception e) {
+			System.out.print(e);
+		}
+		return data;
+	}
 }

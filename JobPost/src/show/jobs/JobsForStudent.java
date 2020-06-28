@@ -20,6 +20,8 @@ public class JobsForStudent {
 				while(rs.next()) {
 					if(rs.getString("JobTitle")==StudentDetails.getPost() || rs.getString("Region")==StudentDetails.getRegion()) {
 					JobData jd = new JobData();
+					jd.setID(Integer.parseInt(rs.getString("ID")));
+					jd.setUserID(rs.getString("UserID"));
 					Blob bl = rs.getBlob("Logo");
 					ByteArrayOutputStream os = new ByteArrayOutputStream();
 					InputStream is = bl.getBinaryStream();
@@ -44,6 +46,8 @@ public class JobsForStudent {
 					arr.add(jd);
 					}
 						JobData jd = new JobData();
+						jd.setID(Integer.parseInt(rs.getString("ID")));
+						jd.setUserID(rs.getString("UserID"));
 						Blob bl = rs.getBlob("Logo");
 						ByteArrayOutputStream os = new ByteArrayOutputStream();
 						InputStream is = bl.getBinaryStream();
@@ -83,6 +87,8 @@ public class JobsForStudent {
 				ResultSet rs = mystate.executeQuery();
 				while(rs.next()) {
 					JobData jd = new JobData();
+					jd.setID(Integer.parseInt(rs.getString("ID")));
+					jd.setUserID(rs.getString("UserID"));
 					Blob bl = rs.getBlob("Logo");
 					ByteArrayOutputStream os = new ByteArrayOutputStream();
 					InputStream is = bl.getBinaryStream();
@@ -104,7 +110,34 @@ public class JobsForStudent {
 					jd.setDescription(rs.getString("Descryption"));
 					jd.setWebsite(rs.getString("Website"));
 					arr.add(jd);
+				}
+			}
+			catch(Exception e) {
+				System.out.print(e);
+			}
+			return arr;
+		}
+		public ArrayList<Application> getMyApps(String userid){
+			ArrayList<Application> arr = new ArrayList<Application>();
+			try {
+				con = ConnectionProvider.getConnection();
+				mystate = con.prepareStatement("select * from Applications where StudentUserID = ?");
+				mystate.setString(1, userid);
+				ResultSet rs = mystate.executeQuery();
+				while(rs.next()) {
+					Application app = new Application();
+					Connection fon = ConnectionProvider.getConnection();
+					PreparedStatement ps = fon.prepareStatement("select CompanyName, JobTitle from Jobs where ID = ?");
+					ps.setString(1, rs.getString("JobID"));
+					ResultSet rs2 = ps.executeQuery();
+					if(rs2.next()) {
+						app.setCompName(rs2.getString("CompanyName"));
+						app.setJobTitle(rs2.getString("JobTitle"));
 					}
+					app.setDescrip(rs.getString("StudentDesciption"));
+					app.setStatus(rs.getString("Status"));
+					arr.add(app);
+				}
 			}
 			catch(Exception e) {
 				System.out.print(e);

@@ -2,6 +2,20 @@ package show.jobs;
 import java.io.InputStream;
 
 public class JobData {
+	private int ID;
+	public int getID() {
+		return ID;
+	}
+	public void setID(int iD) {
+		ID = iD;
+	}
+	public String getUserID() {
+		return UserID;
+	}
+	public void setUserID(String userID) {
+		UserID = userID;
+	}
+	private String UserID;
 	private String email;
 	private InputStream logo;
 	private String imageLogo;

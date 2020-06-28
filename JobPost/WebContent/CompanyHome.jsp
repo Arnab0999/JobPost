@@ -2,6 +2,9 @@
     pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="home.data.*"%>
+<%@ page import="Session.CompanySession" %>
+<%@ page import="login.post.registartion.Customer" %>
+<%Customer c = new Customer(); %>
 <!doctype html>
 <html lang="en">
   <head>
@@ -50,22 +53,26 @@
     <header class="site-navbar mt-3">
       <div class="container-fluid">
         <div class="row align-items-center">
-          <div class="site-logo col-6"><a href="/loginprocess">JobPost</a></div>
+          <div class="site-logo col-6"><a href="/JobPost">JobPost</a></div>
 
           <nav class="mx-auto site-navigation">
             <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-              <li><a href="/loginprocess" class="nav-link active">Home</a></li>
+              <li><a href="/JobPost" class="nav-link active">Home</a></li>
               <li><a href="about.jsp">About</a></li>
               <li class="has-children">
-                <a href="job-listings.jsp">Job Listings</a>
-                <ul class="dropdown">
-                  <li><a href="job-single.jsp">Job Single</a></li>
-                  <li><a href="#">Post a Job</a></li>
-                </ul>
+                <a href="app-listings.jsp">Applications</a>
               </li>
+              <li><a href="my-jobs.jsp">My Jobs</a></li>
               <li><a href="contact.jsp">Contact</a></li>
               <li class="d-lg-none"><a href="CompanyDetails.jsp"><span class="mr-2">+</span> Post a Job</a></li>
-              <li class="d-lg-none"><a href="#">${UserID}</a></li>
+              <li class="has-children">
+                <a href="job-listings.html"><%=CompanySession.getCus().getUserid() %></a>
+                <ul class="dropdown">
+                  <li><a href="#"><%=CompanySession.getCus().getUserid() %></a></li>
+                  <li><a href="logout.jsp">Logout</a></li>
+                </ul>
+              </li>
+             
             </ul>
           </nav>
           
@@ -88,16 +95,17 @@
         <div class="row align-items-center justify-content-center">
           <div class="col-md-12">
             <div class="mb-5 text-center">
+            	<h3>${appmsg}</h3>
               <h1 class="text-white font-weight-bold">Get your  dream job here.</h1>
               <p>We match students and company. Get your company and fulfill your dreams.</p>
             </div>
-            <form method="post" class="search-jobs-form">
+            <form method="post" class="search-jobs-form" action="SearchStuds">
               <div class="row mb-5">
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <input type="text" class="form-control form-control-lg" placeholder="Job title, Company...">
+                  <input type="text" class="form-control form-control-lg" placeholder="Student Post, Skills..." name="keyword">
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Select Region">
+                  <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Select Region" name="Region">
                     <option>Anywhere</option>
                     <option>Bangalore</option>
                     <option>Pune</option>
@@ -137,28 +145,28 @@
 			<form action="get"></form>
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="<%=nd.getStudentNumber()%>">0</strong>
+              <strong class="number" data-number="${StudentNumber}">0</strong>
             </div>
             <span class="caption">Candidates</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="<%=nd.getJobs()%>">0</strong>
+              <strong class="number" data-number="${JobsPosted}">0</strong>
             </div>
             <span class="caption">Jobs Posted</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="<%=nd.getApplications()%>">0</strong>
+              <strong class="number" data-number="${JobsFilled}">0</strong>
             </div>
             <span class="caption">Jobs Filled</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="<%=nd.getCompanyNumber()%>">0</strong>
+              <strong class="number" data-number="${CompanyNumber}">0</strong>
             </div>
             <span class="caption">Companies</span>
           </div>
@@ -172,17 +180,43 @@
 
     <section class="site-section">
       <div class="container">
-
-        <div class="row mb-5 justify-content-center">
+      
+		<div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">${StudentData.size()} Students Listed</h2>
+            <h2 class="section-title mb-2"><%=CompanySession.getApps().size() %> Applications Listed</h2>
           </div>
         </div>
         
         <ul class="job-listings mb-5">
-        	<c:forEach var="Data" items="${StudentData}">
+        	<c:forEach var="Data" items="<%=CompanySession.getApps() %>">
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-            <a href="job-single.jsp"></a>
+            <a href="app-single.jsp?appID=${Data.getAppID()}&FirstName=${Data.getFirstname()}&LastName=${Data.getLastname()}&Email=${Data.getEmail()}&Post=${Data.getPost()}&Region=${Data.getRegion()}&Skills=${Data.getSkills()}&Age=${Data.getAge()}"></a>
+
+            <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+              <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                <h2>${Data.getFirstname()} ${Data.getLastname()}</h2>
+                <strong>${Data.getPost()}</strong>
+              </div>
+              <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                <span class="icon-room"></span> ${Data.getRegion()}
+              </div>
+              <div class="job-listing-meta">
+                <span class="badge badge-danger">${Data.getSkills()}</span>
+              </div>
+            </div>
+          </li>
+          </c:forEach>
+        </ul>
+        
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-7 text-center">
+            <h2 class="section-title mb-2"><%=CompanySession.getStuds().size() %> Students Listed</h2>
+          </div>
+        </div>
+        
+        <ul class="job-listings mb-5">
+        	<c:forEach var="Data" items="<%=CompanySession.getStuds() %>">
+          <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
 
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
               <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
@@ -207,45 +241,6 @@
 
 
     
-   
-
-
-    <section class="bg-light pt-5 testimony-full">
-        
-        <div class="owl-carousel single-carousel">
-
-        
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6 align-self-center text-center text-lg-left">
-                <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
-                </blockquote>
-              </div>
-              <div class="col-lg-6 align-self-end text-center text-lg-right">
-                <img src="images/person_transparent_2.png" alt="Image" class="img-fluid mb-0">
-              </div>
-            </div>
-          </div>
-
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6 align-self-center text-center text-lg-left">
-                <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Chris Peters, @Google</cite></p>
-                </blockquote>
-              </div>
-              <div class="col-lg-6 align-self-end text-center text-lg-right">
-                <img src="images/person_transparent.png" alt="Image" class="img-fluid mb-0">
-              </div>
-            </div>
-          </div>
-
-      </div>
-
-    </section>
     
     <footer class="site-footer">
 

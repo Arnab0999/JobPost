@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="home.data.NumberOfData" %>
 <%@ page import="show.jobs.JobData" %>
+<%@ page import="Session.StudentSession" %>
+<%@ page import="login.post.registartion.Customer" %>
+<% Customer c = new Customer(); %>
 <!doctype html>
 <html lang="en">
   <head>
@@ -50,22 +54,27 @@
     <header class="site-navbar mt-3">
       <div class="container-fluid">
         <div class="row align-items-center">
-          <div class="site-logo col-6"><a href="StudentHome.jsp">JobPost</a></div>
+          <div class="site-logo col-6"><a href="/JobPost">JobPost</a></div>
 
           <nav class="mx-auto site-navigation">
             <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-              <li><a href="#" class="nav-link active">Home</a></li>
+              <li><a href="/JobPost" class="nav-link active">Home</a></li>
               <li><a href="about.jsp">About</a></li>
-              <li class="has-children">
-                <a href="job-listings.jsp">Job Listings</a>
-                <ul class="dropdown">
-                  <li><a href="job-single.jsp">Job Single</a></li>
-                  <li><a href="#">Post a Job</a></li>
-                </ul>
+              <li>
+                <a href="job-listings.jsp">All Jobs</a>
+              </li>
+              <li>
+              	<a href="apps.jsp">My Applications</a>
               </li>
               <li><a href="contact.jsp">Contact</a></li>
               <li class="d-lg-none"><a href="StudentDetails.jsp?email=${StudentData.getEmail()}&firstname=${StudentData.getFirstname()}&lastname=${StudentData.getLastname()}&post=${StudentData.getPost()}&region=${StudentData.getRegion()}&age=${StudentData.getAge()}&skills=${StudentData.getSkills()}"><span class="mr-2">+</span> Add Details</a></li>
-              <li class="d-lg-none"><a href="#">${UserID}</a></li>
+              <li class="has-children">
+                <a href="job-listings.html"><%=StudentSession.getCus().getUserid() %></a>
+                <ul class="dropdown">
+                  <li><a href="#"><%=StudentSession.getCus().getUserid() %></a></li>
+                  <li><a href="logout.jsp">Logout</a></li>
+                </ul>
+              </li>
             </ul>
           </nav>
           
@@ -91,13 +100,13 @@
               <h1 class="text-white font-weight-bold">Get your  dream job here.</h1>
               <p>We match students and company. Get your company and fulfill your dreams.</p>
             </div>
-            <form method="post" class="search-jobs-form">
+            <form method="post" class="search-jobs-form" action="SearchJobs">
               <div class="row mb-5">
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <input type="text" class="form-control form-control-lg" placeholder="Job title, Company...">
+                  <input type="text" class="form-control form-control-lg" placeholder="Job title, Company..." name="keyword">
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Select Region">
+                  <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Select Region" name="Region">
                     <option>Anywhere</option>
                     <option>Bangalore</option>
                     <option>Pune</option>
@@ -117,7 +126,7 @@
                 <div class="col-md-12 popular-keywords">
                   <h3>Trending Keywords:</h3>
                   <ul class="keywords list-unstyled m-0 p-0">
-                  	<c:forEach var="post" items="${CompanyData}">
+                  	<c:forEach var="post" items="<%=StudentSession.getJobs() %>">
                   		<li><a href="#" class="">${post.getJobtitle()}</a></li>
                   	</c:forEach>
                   </ul>
@@ -133,7 +142,7 @@
       </a>
 
     </section>
-    
+    <%NumberOfData nd = new NumberOfData(); %>
     <section class="py-5 bg-image overlay-primary fixed overlay" id="next" style="background-image: url('images/hero_1.jpg');">
       <div class="container">
         <div class="row mb-5 justify-content-center">
@@ -146,28 +155,28 @@
 			<form action="get"></form>
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="${StudentNumber}">0</strong>
+              <strong class="number" data-number="<%=nd.getStudentNumber()%>">0</strong>
             </div>
             <span class="caption">Candidates</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="${CompanyData.size()}">0</strong>
+              <strong class="number" data-number="<%=nd.getJobs()%>">0</strong>
             </div>
             <span class="caption">Jobs Posted</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="0">0</strong>
+              <strong class="number" data-number="<%=nd.getAppsFilled()%>">0</strong>
             </div>
             <span class="caption">Jobs Filled</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="${CompanyData.size()}">0</strong>
+              <strong class="number" data-number="<%=nd.getCompanyNumber() %>">0</strong>
             </div>
             <span class="caption">Companies</span>
           </div>
@@ -181,17 +190,44 @@
 
     <section class="site-section">
       <div class="container">
-
-        <div class="row mb-5 justify-content-center">
+		
+		<div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">${CompanyData.size()} Relevant Jobs Listed</h2>
+            <h2 class="section-title mb-2"><%=StudentSession.getApps().size() %> Your Applications Listed</h2>
           </div>
         </div>
         
         <ul class="job-listings mb-5">
-        <c:forEach var="Data" items="${CompanyData}">
+        <c:forEach var="Data" items="<%=StudentSession.getApps() %>">
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-            <a href="job-single.jsp?CompanyName=${Data.getCompanyname()}&Post=${Data.getJobtitle()}&Loaction=${Data.getLocation()}&Description=${Data.getDescription()}&Salary=${Data.getSalary()}&Website=${Data.getWebsite()}>"></a>
+            
+            <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+              <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                <h2>${Data.getCompName()}</h2>
+                <strong>${Data.getJobTitle()}</strong>
+              </div>
+              <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                Description:  ${Data.getDescrip()}
+              </div>
+              <div class="job-listing-meta">
+                <span class="badge badge-danger">${Data.getStatus()}</span>
+              </div>
+            </div>
+            
+          </li>
+          </c:forEach>
+        </ul>
+		
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-7 text-center">
+            <h2 class="section-title mb-2"><%=StudentSession.getJobs().size() %> Relevant Jobs Listed</h2>
+          </div>
+        </div>
+        
+        <ul class="job-listings mb-5">
+        <c:forEach var="Data" items="<%=StudentSession.getJobs() %>">
+          <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+            <a href="job-single.jsp?ID=${Data.getID()}&UserID=${Data.getUserID()}&CompanyName=${Data.getCompanyname()}&Post=${Data.getJobtitle()}&Location=${Data.getLocation()}&Description=${Data.getDescription()}&Salary=${Data.getSalary()}&Website=${Data.getWebsite()}>"></a>
             <div class="job-listing-logo">
               <img src="data:image/jpg;base64,${Data.getImageLogo()}" alt="No Image Provided" class="img-fluid">
             </div>
@@ -231,7 +267,7 @@
             </div>
             
           </div>
-          	<c:forEach var="image" items="${CompanyData}">
+          	<c:forEach var="image" items="<%=StudentSession.getJobs() %>">
           		<div class="col-6 col-lg-3 col-md-6 text-center">
           			<img src="data:image/jpg;base64,${image.getImageLogo()}" alt="Image" class="img-fluid logo-1">
           		</div>
@@ -243,42 +279,6 @@
     </section>
 
 
-    <section class="bg-light pt-5 testimony-full">
-        
-        <div class="owl-carousel single-carousel">
-
-        
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6 align-self-center text-center text-lg-left">
-                <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
-                </blockquote>
-              </div>
-              <div class="col-lg-6 align-self-end text-center text-lg-right">
-                <img src="images/person_transparent_2.png" alt="Image" class="img-fluid mb-0">
-              </div>
-            </div>
-          </div>
-
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6 align-self-center text-center text-lg-left">
-                <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Chris Peters, @Google</cite></p>
-                </blockquote>
-              </div>
-              <div class="col-lg-6 align-self-end text-center text-lg-right">
-                <img src="images/person_transparent.png" alt="Image" class="img-fluid mb-0">
-              </div>
-            </div>
-          </div>
-
-      </div>
-
-    </section>
 
     
     

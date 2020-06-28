@@ -40,7 +40,7 @@ public class AddJob extends HttpServlet {
 		CustomerDAO cd = new CustomerDAO();
 		Customer c = new Customer();
 		Part fp = request.getPart("Logo");
-		System.out.println(fp);
+		System.out.println(c.getUserid());
 		if(fp!=null)
 				CompanyDetails.setLogo(fp.getInputStream());
 		CompanyDetails.setEmail(request.getParameter("Email"));
@@ -50,7 +50,16 @@ public class AddJob extends HttpServlet {
 		CompanyDetails.setRegion(request.getParameter("Region"));
 		CompanyDetails.setDescryption(request.getParameter("Descryption"));
 		CompanyDetails.setWebsite(request.getParameter("Website"));
-		
+		JobDetails.setEmail(CompanyDetails.getEmail());
+		JobDetails.setCompanyname(CompanyDetails.getCompanyname());
+		JobDetails.setJobtitle(CompanyDetails.getJobtitle());
+		JobDetails.setLocation(CompanyDetails.getLocation());
+		JobDetails.setRegion(CompanyDetails.getRegion());
+		JobDetails.setDescryption(CompanyDetails.getDescryption());
+		JobDetails.setWebsite(CompanyDetails.getWebsite());
+		JobDetails.setLogo(fp.getInputStream());
+		JobDetails.setStatus("Yes");
+		JobDetails.setSalary(request.getParameter("Salary"));
 		int status = cd.setCompanyDetails(c);
 		if(status!=0)
 			request.setAttribute("result", "Details Saved!!");

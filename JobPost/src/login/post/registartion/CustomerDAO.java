@@ -11,17 +11,19 @@ public class CustomerDAO {
 		c.setType(type);
 		try {
 			con = ConnectionProvider.getConnection();
-			if(type == "Student")
+			System.out.println(type);
+			if(type.equals("Student"))
 				mystate = con.prepareStatement("SELECT * from JobPost.Student WHERE UserID=? AND Password=?");
 			else
 				mystate = con.prepareStatement("SELECT * from JobPost.Company WHERE UserID=? AND Password=?");
-			System.out.println(c.getUserid());
 			mystate.setString(1, c.getUserid());
 			mystate.setString(2, c.getPassword());
 			
 			ResultSet rs = mystate.executeQuery();
-			if(!rs.next())
+			if(!rs.next()) {
+				System.out.print("Nigga");
 				return null;
+			}
 		}
 		catch(Exception e) {
 			System.out.println(e);
@@ -33,9 +35,9 @@ public class CustomerDAO {
 		try {
 			con = ConnectionProvider.getConnection();
 			String t = cus.getType();
-			if(t.charAt(0) == 'S') {
+			if(t.equals("Student")) {
 				mystate = con.prepareStatement("INSERT INTO JobPost.Student (UserID, Password) VALUES (?, ?)");
-				System.out.println("Nigga");
+				//System.out.println("Nigga");
 			}
 			else
 				mystate = con.prepareStatement("INSERT INTO JobPost.Company (UserID, Password) VALUES (?, ?)");
@@ -89,18 +91,29 @@ public class CustomerDAO {
 					mystate.setBlob(8, CompanyDetails.getLogo());
 			mystate.setString(9, c.getUserid());
 			mystate.setString(10, c.getPassword());
-			
 			status = mystate.executeUpdate();
-			/*mystate = con.prepareStatement("INSERT INTO JobPost.Jobs (UserID, Email, CompanyName, JobTitle, Location, Region, Descryption, Website) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-			mystate.setString(1, c.getUserid());
-			mystate.setString(2, CompanyDetails.getEmail());
-			mystate.setString(3, CompanyDetails.getCompanyname());
-			mystate.setString(4, CompanyDetails.getJobtitle());
-			mystate.setString(5, CompanyDetails.getLocation());
-			mystate.setString(6, CompanyDetails.getRegion());
-			mystate.setString(7, CompanyDetails.getDescryption());
-			mystate.setString(8, CompanyDetails.getWebsite());
-			status = mystate.executeUpdate();*/
+			mystate = con.prepareStatement("SELECT ID FROM JobPost.Jobs");
+			ResultSet rs = mystate.executeQuery();
+			int id = 0;
+			while(rs.next()) {
+				id = rs.getInt("ID");
+			}
+			if(id!=0)
+				id++;
+			mystate = con.prepareStatement("INSERT INTO JobPost.Jobs (ID, UserID, Email, CompanyName, JobTitle, Location, Region, Descryption, Sallary, Status, Logo, Website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			mystate.setString(1, Integer.toString(id));
+			mystate.setString(2, c.getUserid());
+			mystate.setString(3, JobDetails.getEmail());
+			mystate.setString(4, JobDetails.getCompanyname());
+			mystate.setString(5, JobDetails.getJobtitle());
+			mystate.setString(6, JobDetails.getLocation());
+			mystate.setString(7, JobDetails.getRegion());
+			mystate.setString(8, JobDetails.getDescryption());
+			mystate.setString(9, JobDetails.getSalary());
+			mystate.setString(10, JobDetails.getStatus());
+			mystate.setBlob(11, JobDetails.getLogo());
+			mystate.setString(12, JobDetails.getWebsite());
+			status = mystate.executeUpdate();
 			con.close();
 		}
 		catch(Exception e) {

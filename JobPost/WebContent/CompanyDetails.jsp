@@ -155,13 +155,13 @@
               </div>
 
               <div class="form-group">
-                <label for="company-tagline">Tagline (Optional)</label>
-                <input type="text" class="form-control" id="company-tagline" placeholder="e.g. New York">
+                <label for="company-tagline">Salary</label>
+                <input type="text" class="form-control" id="company-tagline" placeholder="e.g. 11LPA" name="Salary">
               </div>
 
               
               <div class="form-group">
-                <label for="company-website">Website (Optional)</label>
+                <label for="company-website">Website</label>
                 <input type="text" class="form-control" id="company-website" placeholder="https://" name="Website">
               </div>
 

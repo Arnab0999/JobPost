@@ -1,6 +1,15 @@
 package login.post.registartion;
 
 public class StudentDetails {
+	private static String appID;
+	public static String getAppID() {
+		return appID;
+	}
+
+	public static void setAppID(String appID) {
+		StudentDetails.appID = appID;
+	}
+
 	private static String email;
 	private static String firstname;
 	private static String lastname;

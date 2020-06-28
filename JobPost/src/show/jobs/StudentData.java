@@ -1,6 +1,27 @@
 package show.jobs;
 
 public class StudentData {
+	private String appID;
+	public String getAppID() {
+		return appID;
+	}
+	public void setAppID(String appID) {
+		this.appID = appID;
+	}
+	private String UserID;
+	public String getUserID() {
+		return UserID;
+	}
+	public void setUserID(String userID) {
+		UserID = userID;
+	}
+	public String getDescription() {
+		return Description;
+	}
+	public void setDescription(String description) {
+		Description = description;
+	}
+	private String Description;
 	private String firstname;
 	public String getFirstname() {
 		return firstname;

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="Session.HomeSession" %>
 <!doctype html>
 <html lang="en">
   <head>
@@ -56,11 +57,7 @@
               <li><a href="#" class="nav-link active">Home</a></li>
               <li><a href="about.jsp">About</a></li>
               <li class="has-children">
-                <a href="job-listings.jsp">Job Listings</a>
-                <ul class="dropdown">
-                  <li><a href="job-single.jsp">Job Single</a></li>
-                  <li><a href="post-job.jsp">Post a Job</a></li>
-                </ul>
+                <a href="all-listings.jsp">All Jobs</a>
               </li>
               <li><a href="contact.jsp">Contact</a></li>
               <li class="d-lg-none"><a href="post-job.jsp"><span class="mr-2">+</span> Post a Job</a></li>
@@ -90,28 +87,22 @@
               <h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
               <p>We will find your dream job just login show your interests and get a job, yes it is that easy.</p>
             </div>
-            <form method="post" class="search-jobs-form">
+            <form method="post" class="search-jobs-form" action="SearchJobs">
               <div class="row mb-5">
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <input type="text" class="form-control form-control-lg" placeholder="Job title, Company...">
+                  <input type="text" class="form-control form-control-lg" placeholder="Job title, Company..." name="keyword">
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Select Region">
+                  <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Select Region" name="Region">
                     <option>Anywhere</option>
-                    <option>San Francisco</option>
-                    <option>Palo Alto</option>
-                    <option>New York</option>
-                    <option>Manhattan</option>
-                    <option>Ontario</option>
-                    <option>Toronto</option>
-                    <option>Kansas</option>
-                    <option>Mountain View</option>
-                  </select>
-                </div>
-                <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Select Job Type">
-                    <option>Part Time</option>
-                    <option>Full Time</option>
+                    <option>Bangalore</option>
+                    <option>Pune</option>
+                    <option>Ahemadabad</option>
+                    <option>Dehradun</option>
+                    <option>Delhi</option>
+                    <option>Mumbai</option>
+                    <option>Hyderabad</option>
+                    <option>Goa</option>
                   </select>
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
@@ -122,9 +113,9 @@
                 <div class="col-md-12 popular-keywords">
                   <h3>Trending Keywords:</h3>
                   <ul class="keywords list-unstyled m-0 p-0">
-                    <li><a href="#" class="">UI Designer</a></li>
-                    <li><a href="#" class="">Python</a></li>
-                    <li><a href="#" class="">Developer</a></li>
+                  	<c:forEach var="post" items="<%=HomeSession.getAllJobs() %>">
+                  		<li><a href="#" class="">${post.getJobtitle()}</a></li>
+                  	</c:forEach>
                   </ul>
                 </div>
               </div>
@@ -151,28 +142,28 @@
 			<form action="get"></form>
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="${StudentNumber}">0</strong>
+              <strong class="number" data-number="<%=HomeSession.getStudentNumber() %>">0</strong>
             </div>
             <span class="caption">Candidates</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="${JobsPosted}">0</strong>
+              <strong class="number" data-number="<%=HomeSession.getAllJobs().size() %>">0</strong>
             </div>
             <span class="caption">Jobs Posted</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="${JobsFilled}">0</strong>
+              <strong class="number" data-number="<%=HomeSession.getJobsFilled() %>">0</strong>
             </div>
             <span class="caption">Jobs Filled</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="${CompanyNumber}">0</strong>
+              <strong class="number" data-number="<%=HomeSession.getCompanyNumber() %>">0</strong>
             </div>
             <span class="caption">Companies</span>
           </div>
@@ -189,14 +180,14 @@
 
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">${JobData.size()} Jobs Listed</h2>
+            <h2 class="section-title mb-2"><%=HomeSession.getAllJobs().size() %> Jobs Listed</h2>
           </div>
         </div>
         
         <ul class="job-listings mb-5">
-        <c:forEach var="Data" items="${JobData}">
+        <c:forEach var="Data" items="<%=HomeSession.getAllJobs() %>">
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-            <a href="job-single.jsp?CompanyName=${Data.getCompanyname()}&Post=${Data.getJobtitle()}&Loaction=${Data.getLocation()}&Description=${Data.getDescription()}&Salary=${Data.getSalary()}&Website=${Data.getWebsite()}>"></a>
+            
             <div class="job-listing-logo">
               <img src="data:image/jpg;base64,${Data.getImageLogo()}" alt="No Image Provided" class="img-fluid">
             </div>
@@ -260,43 +251,7 @@
     </section>
 
 
-    <section class="bg-light pt-5 testimony-full">
-        
-        <div class="owl-carousel single-carousel">
-
-        
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6 align-self-center text-center text-lg-left">
-                <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
-                </blockquote>
-              </div>
-              <div class="col-lg-6 align-self-end text-center text-lg-right">
-                <img src="images/person_transparent_2.png" alt="Image" class="img-fluid mb-0">
-              </div>
-            </div>
-          </div>
-
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6 align-self-center text-center text-lg-left">
-                <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Chris Peters, @Google</cite></p>
-                </blockquote>
-              </div>
-              <div class="col-lg-6 align-self-end text-center text-lg-right">
-                <img src="images/person_transparent.png" alt="Image" class="img-fluid mb-0">
-              </div>
-            </div>
-          </div>
-
-      </div>
-
-    </section>
-
+    
     
     <footer class="site-footer">
 

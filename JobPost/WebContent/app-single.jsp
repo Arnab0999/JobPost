@@ -1,21 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="show.jobs.JobData" %>
+<%@ page import="show.jobs.StudentData" %>
 <%@ page import="login.post.registartion.*" %>
 <%
-	JobDetails.setID(Integer.parseInt(request.getParameter("ID")));
-	JobDetails.setUserID(request.getParameter("UserID"));
-	JobDetails.setCompanyname(request.getParameter("CompanyName"));
-	JobDetails.setJobtitle(request.getParameter("Post"));
-	JobDetails.setLocation(request.getParameter("Location"));
-	JobDetails.setDescryption(request.getParameter("Description"));
-	JobDetails.setSalary(request.getParameter("Salary"));
-	JobDetails.setWebsite(request.getParameter("Website"));
+	StudentDetails.setFirstname(request.getParameter("FirstName"));
+	StudentDetails.setLastname(request.getParameter("LastName"));
+	StudentDetails.setEmail(request.getParameter("Email"));
+	StudentDetails.setPost(request.getParameter("Post"));
+	StudentDetails.setRegion(request.getParameter("Region"));
+	StudentDetails.setSkills(request.getParameter("Skills"));
+	StudentDetails.setAge(request.getParameter("Age"));
+	StudentDetails.setAppID(request.getParameter("appID"));
 %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Job Single</title>
+    <title>Application Single</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="" />
@@ -74,17 +74,18 @@
         <div class="row align-items-center justify-content-center">
           <div class="col-md-12">
             <div class="mb-5 text-center">
-              <h1 class="text-white font-weight-bold"><%=JobDetails.getCompanyname()%></h1>
-              <h2 class="text-black font-weight-bold"><%=JobDetails.getJobtitle()%></h2>
-              <p>Job Description: <%=JobDetails.getDescryption()%></p>
+              <h1 class="text-white font-weight-bold"><%=StudentDetails.getFirstname()%> <%=StudentDetails.getLastname() %>></h1>
+              <h2 class="text-black font-weight-bold"><%=StudentDetails.getPost()%></h2>
+              <h3><%=StudentDetails.getEmail() %></h3>
+              <p>Student Description: <%=request.getParameter("Description")%></p>
               <ul class="keywords list-unstyled m-0 p-0">
-                  	<li>Salary: <%=JobDetails.getSalary()%>LPA</li>
+                  	<li>Skills: <%=StudentDetails.getSkills()%></li>
               </ul>
-              <h3>Location: <%=JobDetails.getLocation()%></h3>
-              <a href="<%=JobDetails.getWebsite()%>" target="_blank">Visit Company website.</a>
-              <form action="applied" method="post">
-              		<input type="text" name="studentbio" placeholder="Why you should get this job?"/>
-              		<input type="submit" name="apply" value="Apply"/>
+              <h3>Location: <%=StudentDetails.getRegion()%></h3>
+              <h3>Age: <%=StudentDetails.getAge() %></h3>
+              <form action="accept" method="post">
+              		<input type="submit" name="submit" value="Accept"/>
+              		<input type="submit" name="submit" value="Reject"/>
               </form>
         
             </div>
